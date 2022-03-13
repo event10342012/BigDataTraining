@@ -32,6 +32,9 @@ class PhoneTraffic implements Writable {
         return sum;
     }
 
+    public PhoneTraffic() {
+    }
+
     public PhoneTraffic(long up, long down, long sum) {
         this.up = up;
         this.down = down;
@@ -53,7 +56,7 @@ class PhoneTraffic implements Writable {
     }
 }
 
-class TrafficStat {
+public class TrafficStat {
     public static class TrafficMapper extends Mapper<Object, Text, Text, PhoneTraffic> {
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             String[] lines = value.toString().split("\t");
