@@ -6,7 +6,6 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
 
-// docker run -d -p 2181:2181 -p 8080:8080 -p 8085:8085 -p 9090:9090 -p 9095:9095 -p 16000:16000 -p 16010:16010 -p 16201:16201 -p 16301:16301 -p 16030:16030 -p 16020:16020 harisekhon/hbase
 
 public class StudentHbase {
     public static void main(String[] args) throws IOException {
