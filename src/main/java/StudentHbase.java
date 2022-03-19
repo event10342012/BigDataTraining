@@ -39,5 +39,31 @@ public class StudentHbase {
         put.addColumn(Bytes.toBytes(colFamily), Bytes.toBytes("name"), Bytes.toBytes("Tom"));
         conn.getTable(tableName).put(put);
         System.out.println("Data insert success");
+
+        // select data
+        Get get = new Get(Bytes.toBytes(rowKey));
+        if (!get.isCheckExistenceOnly()){
+            Result result = conn.getTable(tableName).get(get);
+            for (Cell cell: result.rawCells()){
+                String colName = Bytes.toString(cell.getQualifierArray(), cell.getQualifierOffset(), cell.getQualifierLength());
+                String value = Bytes.toString(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength());
+                System.out.println("Data get success, colName: " + colName + ", value: " + value);
+            }
+        }
+
+        // delete data
+        Delete delete = new Delete(Bytes.toBytes(rowKey));
+        conn.getTable(tableName).delete(delete);
+        System.out.println("Delete success");
+
+        // delete table
+        if (admin.tableExists(tableName)){
+            admin.disableTable(tableName);
+            admin.deleteTable(tableName);
+            System.out.println("Table delete success");
+        } else{
+            System.out.println("Table does not exists");
+        }
+
     }
 }
