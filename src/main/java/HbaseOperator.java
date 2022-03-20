@@ -92,7 +92,7 @@ public class HbaseOperator {
 
     public static void main(String[] args) throws IOException {
         List<String> columnFamilies = Arrays.asList("info", "score");
-        String tableName = "陳宏育:student";
+        String tableName = "student";
 
         HbaseOperator.createTable(tableName, columnFamilies);
         HbaseOperator.putData(tableName, "陳宏育", "info", "student_id", "G20220735020143");
