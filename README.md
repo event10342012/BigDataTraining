@@ -11,10 +11,6 @@
 create_namespace '陳宏育'
 ```
 
-```shell
-
-```
-
 ### W4,5 Homework - Hive
 
 create table and insert data into table
