@@ -13,6 +13,8 @@ create_namespace '陳宏育'
 
 ### W4,5 Homework - Hive
 
+Homework folder: w4_hw_hive
+
 create table and insert data into table
 
 ```shell
