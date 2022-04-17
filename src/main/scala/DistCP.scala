@@ -1,11 +1,14 @@
 import org.apache.hadoop.conf.Configuration
 
 import scala.collection.mutable.ArrayBuffer
+import scala.sys.exit
 import org.apache.hadoop.fs.Path
 import org.apache.hadoop.fs.FileUtil
 import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession
+
+import scala.annotation.tailrec
 
 
 case class SparkDistCPOptions(ignoreFailures: Boolean, maxConcurrence: Int)
@@ -51,10 +54,26 @@ object DistCP {
   }
 
   def main(args: Array[String]): Unit = {
+    def nextArg(map: Map[String, Any], list: List[String]): Map[String, Any] = {
+      list match {
+        case Nil => map
+        case "-i" :: value :: tail =>
+          nextArg(map ++ Map("i" -> value.toBoolean), tail)
+        case "-m" :: value :: tail =>
+          nextArg(map ++ Map("m" -> value.toInt), tail)
+        case unknown :: _ =>
+          println("Unknown option " + unknown)
+          exit(1)
+      }
+    }
+
+    val options = nextArg(Map(), args.toList)
+
     val fileList = new ArrayBuffer[(Path, Path)]()
-    val sourcePath: Path = new Path(args.apply(0))
-    val targetPath: Path = new Path(args.apply(1))
-    val options = SparkDistCPOptions(true, 5)
+    val sourcePath: Path = new Path("/Users/leochen/PycharmProjects/mdp")
+    val targetPath: Path = new Path("/Users/leochen/hw")
+    val sparkDistCPOptions = SparkDistCPOptions(options.getOrElse("i", true).asInstanceOf,
+      options.getOrElse("m", 5).asInstanceOf)
 
     val spark = SparkSession
       .builder
@@ -63,7 +82,7 @@ object DistCP {
 
     val fs = FileSystem.get(spark.sparkContext.hadoopConfiguration)
 
-    makeDir(spark, sourcePath, targetPath, fileList, options)
-    copy(spark, fileList, options)
+    makeDir(spark, sourcePath, targetPath, fileList, sparkDistCPOptions)
+    copy(spark, fileList, sparkDistCPOptions)
   }
 }
