@@ -79,10 +79,5 @@ object DistCP {
       .builder
       .appName("DistCP")
       .getOrCreate()
-
-    val fs = FileSystem.get(spark.sparkContext.hadoopConfiguration)
-
-    makeDir(spark, sourcePath, targetPath, fileList, sparkDistCPOptions)
-    copy(spark, fileList, sparkDistCPOptions)
   }
 }

@@ -32,3 +32,6 @@ q2
 $ hive -f w4_hw_hive/q2.sql
 ```
 <img src="img/hw2.png" style="zoom:70%" />
+
+
+### W6, 7 Homework - Spark 
